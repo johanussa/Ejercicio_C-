@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
+
 using namespace std;
 
 int main() {
@@ -41,11 +42,10 @@ int main() {
 	for (int i = 0; i < cant; i++) {
 		cout << " " << num[i];
 	}
-	cout << " }\n\n";
-	
-	cout << "\n\t ** Array Ordenado de mayor a menor **\n\n";
-	
+	cout << " }\n\n";	
+	cout << "\n\t ** Array Ordenado de mayor a menor **\n\n";	
 	cout << " Array: {";
+	
 	for (int i = cant - 1; i >= 0; i --) {
 		cout << " " << num[i];
 	}
