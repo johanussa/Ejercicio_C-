@@ -192,7 +192,7 @@ void eliminar() {
 	bool find = false;
 	
 	ofstream archAux;
-	ofstream read;
+	ifstream read;
 	
 	archAux.open("Auxiliar.txt", ios::out);
 	read.open("Aprendices.txt", ios::out | ios::in);
@@ -215,9 +215,9 @@ void eliminar() {
 					cout << "\n\t\t * No, No eliminarlo ........... 2";
 					cout << "\n\t\t * Cancelar Operacion .......... 3";
 					cout << "\n\t\t\t>>> Opcion: "; cin >> opc;
+					system("CLS");
 					
 					switch (opc) {
-						system("CLS");
 						case 1: 
 							find = true;
 							cout << "\n\n\t\t*** El registro de " << aprendiz.nombre << " ha sido Eliminado ***\n\n";
@@ -228,7 +228,7 @@ void eliminar() {
 							cout << "\n\n\t\t*** !! La Opcion ingresada es incorrecta ¡¡\n";
 							cout << "\t\t*** Vuelva a intentarlo :) ***\n\n\n";
 					}
-				} whiile (opc < 1 || opc > 3); 
+				} while (opc < 1 || opc > 3); 
 			} else {
 				archAux << aprendiz.clave << " " << aprendiz.nombre << " " << aprendiz.semestre << " "
 					<< aprendiz.grupo << " " << aprendiz.edad << endl;
@@ -265,3 +265,4 @@ void catchError() {
 	exit(1);	// Salimos del programa ya que no se pudo crear el archivo	
 	return;
 }
+
