@@ -87,6 +87,9 @@ void guardar() {
 			cout << "\n\t\t*** Datos aprendiz " << i + 1 << " ***\n\n";			
 			cout << "\t> Ingresa la Clave del Aprendiz: ";
 	        cin >> auxClave;
+	        
+	        if (!isdigit(auxClave)) { exit(1); }	// Funcion que determina si la clave ingresada es un numero
+	        
 	        consultar >> aprendiz.clave;
 	        
 	        while (!consultar.eof()) {   
@@ -265,4 +268,3 @@ void catchError() {
 	exit(1);	// Salimos del programa ya que no se pudo crear el archivo	
 	return;
 }
-
