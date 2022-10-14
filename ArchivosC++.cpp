@@ -23,8 +23,9 @@ void buscar();
 void guardar();
 void eliminar();
 void consultas();
-//void modificar();
+void modificar();
 void catchError();
+void validarNum(int num, string msj);
 
 int main() {
 	
@@ -43,8 +44,7 @@ void menu() {
         cout << " \t\t\t\t 4. Buscar Registro" << endl;
         cout << " \t\t\t\t 5. Modificar" << endl;
         cout << " \t\t\t\t 6. Salir" << endl << endl;
-        cout << " \t\t\t Que deseas hacer.... ? "; cin >> opcion;
-        
+        cout << " \t\t\t Que deseas hacer.... ? "; cin >> opcion;        
         system("CLS");        
         
         switch (opcion) {           	
@@ -52,7 +52,7 @@ void menu() {
             case 2: eliminar(); break;
             case 3: consultas(); break;
             case 4: buscar(); break;
-            case 5: /*modificar();*/ break;  
+            case 5: modificar(); break;  
             case 6: salir(); break;
             default: 
 				cout << "\n\n\n\t\t\t* La Opcion ingresada es Incorrecta! *\n\n\t";
@@ -67,7 +67,6 @@ void menu() {
 void guardar() {
 	
 	int cont = 0;
-	string frase;
 	bool repeat = false;
 	
 	ofstream escribir;							// Crear tipo de dato ofstream de archivos - o = output
@@ -81,12 +80,14 @@ void guardar() {
 		
 		cout << "\n\n\t> Cuantos datos va a ingresar? "; cin >> cont; cout << endl;
 		system("CLS");
+		validarNum(cont, "Cantidad de datos"); 
 		
 		for (int i = 0; i < cont; i++) {
 			
 			cout << "\n\t\t*** Datos aprendiz " << i + 1 << " ***\n\n";			
-			cout << "\t> Ingresa la Clave del Aprendiz: ";
-	        cin >> auxClave;
+			cout << "\t> Ingresa la Clave del Aprendiz: "; cin >> auxClave;
+	        
+	        validarNum(auxClave, "Clave");       
 	        consultar >> aprendiz.clave;
 	        
 	        while (!consultar.eof()) {   
@@ -102,8 +103,7 @@ void guardar() {
 	        }
 			if (!repeat) {
 				
-				aprendiz.clave = auxClave;
-				fflush(stdin); 
+				aprendiz.clave = auxClave; fflush(stdin); 
 				cout << "\t* Ingresa el Nombre del Aprendiz: "; getline(cin, aprendiz.nombre); 
 				
 				for (int i = 0; i < aprendiz.nombre.length(); i++) {
@@ -111,14 +111,17 @@ void guardar() {
 						aprendiz.nombre = aprendiz.nombre.replace(aprendiz.nombre.find(" "), 1, "_");
 					}	
 				}				
-	            cout << "\t* Ingresa el Semestre del Aprendiz: "; cin >> aprendiz.semestre; fflush(stdin);
+	            cout << "\t* Ingresa el Semestre del Aprendiz: "; cin >> aprendiz.semestre; 
+	            validarNum(aprendiz.semestre, "Semestre"); fflush(stdin);
 	            cout << "\t* Ingresa el Grupo del Aprendiz: "; getline(cin, aprendiz.grupo);
 	            cout << "\t* Ingresa la Edad del Aprendiz: "; cin >> aprendiz.edad;
+	            validarNum(aprendiz.edad, "Edad");
+	            
 	            escribir << aprendiz.clave << " " << aprendiz.nombre << " " << aprendiz.semestre
 					<< " " << aprendiz.grupo << " " << aprendiz.edad << "\n"; 
-			}			
+			} else { break; }			
 		}
-		cout << "\n\t\t*** Registro Agregado Corectamente !!! ***\n\n\n\n\t";
+		!repeat ? cout << "\n\t\t*** Registro Agregado Corectamente !!! ***\n\n\n\n\t" : cout << "\n\n\n\t"; 
 		escribir.close(); consultar.close();
 				
 	} else { catchError(); }	
@@ -161,6 +164,7 @@ void buscar() {
 	if (read.is_open()) {
 		
 		cout << "\n\n\t\t* Ingrese la Clave del aprendiz a buscar: "; cin >> auxClave;
+		validarNum(auxClave, "Clave");
 		read >> aprendiz.clave;
 		
 		while (!read.eof()) {
@@ -192,7 +196,7 @@ void eliminar() {
 	bool find = false;
 	
 	ofstream archAux;
-	ofstream read;
+	ifstream read;
 	
 	archAux.open("Auxiliar.txt", ios::out);
 	read.open("Aprendices.txt", ios::out | ios::in);
@@ -200,35 +204,36 @@ void eliminar() {
 	if (archAux.is_open() && read.is_open()) {
 		
 		cout << "\n\n\t\t* Ingrese la Clave del aprendiz a buscar: "; cin >> auxClave;
+		validarNum(auxClave, "Clave");
 		read >> aprendiz.clave;
 		
 		while (!read.eof()) {
 			
-			read >> aprendiz.nombre >> aprendiz.semestre >> aprendiz.grupo >> aprendiz.edad;
-			
+			read >> aprendiz.nombre >> aprendiz.semestre >> aprendiz.grupo >> aprendiz.edad;			
 			if (aprendiz.clave == auxClave) {
 				
 				do {
 					system("CLS");
-					cout << "\n\n\t\t*** Seguro desea eliminar el registro " << auxClave << " ***\n";
-					cout << "\n\t\t * Si, Eliminar registro ....... 1";
-					cout << "\n\t\t * No, No eliminarlo ........... 2";
-					cout << "\n\t\t * Cancelar Operacion .......... 3";
-					cout << "\n\t\t\t>>> Opcion: "; cin >> opc;
+					cout << "\n\n\t\t*** Seguro desea eliminar el registro " << auxClave << " ? ***\n";
+					cout << "\n\t\t    * Si, Eliminar registro ....... 1";
+					cout << "\n\t\t    * No, No eliminarlo ........... 2";
+					cout << "\n\t\t    * Cancelar Operacion .......... 3\n\n";
+					cout << "\n\t\t\t\t>>> Opcion: "; cin >> opc;
+					system("CLS");
 					
 					switch (opc) {
-						system("CLS");
 						case 1: 
 							find = true;
-							cout << "\n\n\t\t*** El registro de " << aprendiz.nombre << " ha sido Eliminado ***\n\n";
+							cout << "\n\n\t\t*** El registro de " << aprendiz.nombre << " ha sido Eliminado ***\n\n\t";
 							break;
-						case 2: return; break;
-						case 3: return; break;
+						case 2: cout << "\n\n\n\t"; return; break;
+						case 3: cout << "\n\n\n\t"; return; break;
 						default: 							
-							cout << "\n\n\t\t*** !! La Opcion ingresada es incorrecta ¡¡\n";
-							cout << "\t\t*** Vuelva a intentarlo :) ***\n\n\n";
+							cout << "\n\n\t\t*** !!! La Opcion ingresada es incorrecta !!! ***\n";
+							cout << "\t\t\t*** Vuelva a intentarlo :) ***\n\n\n\t";
+							system("PAUSE");
 					}
-				} whiile (opc < 1 || opc > 3); 
+				} while (opc < 1 || opc > 3); 
 			} else {
 				archAux << aprendiz.clave << " " << aprendiz.nombre << " " << aprendiz.semestre << " "
 					<< aprendiz.grupo << " " << aprendiz.edad << endl;
@@ -248,6 +253,74 @@ void eliminar() {
 	
 	return;
 }
+void modificar() {
+	
+	bool find = false;
+	
+	ofstream auxiliar;
+	ifstream read;
+	
+	auxiliar.open("Auxiliar.txt", ios::out);
+	read.open("Aprendices.txt", ios::out | ios::in);
+	
+	if (auxiliar.is_open() && read.is_open()) {
+		
+		cout << "\n\n\t\t* Ingrese la Clave del aprendiz a modificar: "; cin >> auxClave;
+		validarNum(auxClave, "Clave");
+		read >> aprendiz.clave;
+		
+		while (!read.eof()) {
+			
+			read >> aprendiz.nombre >> aprendiz.semestre >> aprendiz.grupo >> aprendiz.edad; 
+			if (aprendiz.clave == auxClave) {
+										
+				find = true;
+				system("CLS");
+				
+				cout << "\n\n\t\t\t     *** Datos Antiguos: ***";
+				cout << "\n\t\t\t______________________________" << endl;
+                cout << "\n\t\t\t * Clave: " << aprendiz.clave << endl;
+				cout << "\t\t\t * Nombre: " << aprendiz.nombre << endl;
+				cout << "\t\t\t * Semestre: " << aprendiz.semestre << endl;
+				cout << "\t\t\t * Grupo: " << aprendiz.grupo << endl;
+				cout << "\t\t\t * Edad: " << aprendiz.edad << endl;
+				cout << "\t\t\t______________________________\n\n";
+				cout << "\t\t\t*** Ingrese los Datos Nuevos: ***\n\n";
+                
+                fflush(stdin); 
+				cout << "\t\t* Ingrese el Nombre del Aprendiz: "; getline(cin, aprendiz.nombre); 
+				
+				for (int i = 0; i < aprendiz.nombre.length(); i++) {
+					if (aprendiz.nombre[i] == ' ') {
+						aprendiz.nombre = aprendiz.nombre.replace(aprendiz.nombre.find(" "), 1, "_");
+					}	
+				}				
+			    cout << "\t\t* Ingrese el Semestre del Aprendiz: "; cin >> aprendiz.semestre;
+			    validarNum(aprendiz.semestre, "Semestre");  fflush(stdin);
+			    cout << "\t\t* Ingrese el Grupo del Aprendiz: "; getline(cin, aprendiz.grupo);
+			    cout << "\t\t* Ingrese la Edad del Aprendiz: "; cin >> aprendiz.edad;
+			    validarNum(aprendiz.edad, "Edad");
+
+			    auxiliar << aprendiz.clave << " " << aprendiz.nombre << " " << aprendiz.semestre
+					<< " " << aprendiz.grupo << " " << aprendiz.edad << "\n"; 
+				cout << "\n\t\t\t*** Registro Modificado Corectamente !!! ***\n\n\n\n\t";
+			} else {
+				auxiliar << aprendiz.clave << " " << aprendiz.nombre << " " << aprendiz.semestre
+					<< " " << aprendiz.grupo << " " << aprendiz.edad << "\n"; 
+			}
+			read >> aprendiz.clave;
+		}
+	} else { catchError(); }
+	
+	if (!find) {
+		system("CLS");
+		cout << "\n\n\n\t*** No existe el registro para la clave " << auxClave << " ***\n\n\t"; 
+	}
+	read.close(); auxiliar.close();
+	remove("Aprendices.txt");
+	rename("Auxiliar.txt", "Aprendices.txt");	
+	return;
+}
 void salir() {   
 
     cout << "\n\n\n\t\t\t *** ";
@@ -265,4 +338,13 @@ void catchError() {
 	exit(1);	// Salimos del programa ya que no se pudo crear el archivo	
 	return;
 }
-
+void validarNum( int num, string msj ) {	// Funcion que determina si la clave ingresada es un numero
+	
+	if (!num) { 
+    	system("CLS");
+		cout << "\n\n\n\t\t* El campo \'" << msj << "\' ingresado No es valido *\n";
+		cout << "\t\t\t    * Vuelva a intentarlo *\n\n\n\t";
+		exit(1);
+	}		
+	return;
+}
