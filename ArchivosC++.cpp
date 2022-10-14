@@ -54,14 +54,10 @@ void menu() {
             case 4: buscar(); break;
             case 5: modificar(); break;  
             case 6: salir(); break;
-            default: 
-				cout << "\n\n\n\t\t\t* La Opcion ingresada es Incorrecta! *\n\n\t";
-				system("PAUSE");
-				system("CLS");
+            default: cout << "\n\n\n\t\t\t* La Opcion ingresada es Incorrecta! *\n\n\n\t";
         }
         system("PAUSE"); cout << "\n\n";
-    } while (opcion != 6);
-    
+    } while (opcion != 6);    
 	return;
 }
 void guardar() {
@@ -90,10 +86,9 @@ void guardar() {
 	        validarNum(auxClave, "Clave");       
 	        consultar >> aprendiz.clave;
 	        
-	        while (!consultar.eof()) {   
-				consultar >> aprendiz.nombre >> aprendiz.semestre >> aprendiz.grupo >> aprendiz.edad;
+	        while (!consultar.eof()) {   	        
+				consultar >> aprendiz.nombre >> aprendiz.semestre >> aprendiz.grupo >> aprendiz.edad;				
 	            if(aprendiz.clave == auxClave) { 
-					system("CLS");  
 					cout << "\n\n\t\t* Ya Existe un Registro con esta Clave :( *" << endl;
 					cout << "\t\t\t* Vuelve a intentarlo *\n" << endl;
 	                repeat = true;
@@ -106,14 +101,14 @@ void guardar() {
 				aprendiz.clave = auxClave; fflush(stdin); 
 				cout << "\t* Ingresa el Nombre del Aprendiz: "; getline(cin, aprendiz.nombre); 
 				
-				for (int i = 0; i < aprendiz.nombre.length(); i++) {
-					if (aprendiz.nombre[i] == ' ') {
+				for (int i = 0; i < aprendiz.nombre.length(); i++) {	// Quitamos los espacios de la cadena ingresada
+					if (aprendiz.nombre[i] == ' ') {					// Para prevenir errores, por cada espacio se agrega un '_'
 						aprendiz.nombre = aprendiz.nombre.replace(aprendiz.nombre.find(" "), 1, "_");
 					}	
 				}				
 	            cout << "\t* Ingresa el Semestre del Aprendiz: "; cin >> aprendiz.semestre; 
-	            validarNum(aprendiz.semestre, "Semestre"); fflush(stdin);
-	            cout << "\t* Ingresa el Grupo del Aprendiz: "; getline(cin, aprendiz.grupo);
+	            validarNum(aprendiz.semestre, "Semestre"); fflush(stdin);	// Se valida para que cada dato ingresado corresponda 
+	            cout << "\t* Ingresa el Grupo del Aprendiz: "; getline(cin, aprendiz.grupo);	// al tipo de dato determinado
 	            cout << "\t* Ingresa la Edad del Aprendiz: "; cin >> aprendiz.edad;
 	            validarNum(aprendiz.edad, "Edad");
 	            
@@ -280,12 +275,12 @@ void modificar() {
 				cout << "\n\n\t\t\t     *** Datos Antiguos: ***";
 				cout << "\n\t\t\t______________________________" << endl;
                 cout << "\n\t\t\t * Clave: " << aprendiz.clave << endl;
-				cout << "\t\t\t * Nombre: " << aprendiz.nombre << endl;
-				cout << "\t\t\t * Semestre: " << aprendiz.semestre << endl;
-				cout << "\t\t\t * Grupo: " << aprendiz.grupo << endl;
-				cout << "\t\t\t * Edad: " << aprendiz.edad << endl;
-				cout << "\t\t\t______________________________\n\n";
-				cout << "\t\t\t*** Ingrese los Datos Nuevos: ***\n\n";
+                cout << "\t\t\t * Nombre: " << aprendiz.nombre << endl;
+                cout << "\t\t\t * Semestre: " << aprendiz.semestre << endl;
+                cout << "\t\t\t * Grupo: " << aprendiz.grupo << endl;
+                cout << "\t\t\t * Edad: " << aprendiz.edad << endl;
+                cout << "\t\t\t______________________________\n\n";
+                cout << "\t\t\t*** Ingrese los Datos Nuevos: ***\n\n";
                 
                 fflush(stdin); 
 				cout << "\t\t* Ingrese el Nombre del Aprendiz: "; getline(cin, aprendiz.nombre); 
@@ -295,13 +290,13 @@ void modificar() {
 						aprendiz.nombre = aprendiz.nombre.replace(aprendiz.nombre.find(" "), 1, "_");
 					}	
 				}				
-			    cout << "\t\t* Ingrese el Semestre del Aprendiz: "; cin >> aprendiz.semestre;
-			    validarNum(aprendiz.semestre, "Semestre");  fflush(stdin);
-			    cout << "\t\t* Ingrese el Grupo del Aprendiz: "; getline(cin, aprendiz.grupo);
-			    cout << "\t\t* Ingrese la Edad del Aprendiz: "; cin >> aprendiz.edad;
-			    validarNum(aprendiz.edad, "Edad");
-
-			    auxiliar << aprendiz.clave << " " << aprendiz.nombre << " " << aprendiz.semestre
+	            cout << "\t\t* Ingrese el Semestre del Aprendiz: "; cin >> aprendiz.semestre;
+	            validarNum(aprendiz.semestre, "Semestre");  fflush(stdin);
+	            cout << "\t\t* Ingrese el Grupo del Aprendiz: "; getline(cin, aprendiz.grupo);
+	            cout << "\t\t* Ingrese la Edad del Aprendiz: "; cin >> aprendiz.edad;
+	            validarNum(aprendiz.edad, "Edad");
+	            
+	            auxiliar << aprendiz.clave << " " << aprendiz.nombre << " " << aprendiz.semestre
 					<< " " << aprendiz.grupo << " " << aprendiz.edad << "\n"; 
 				cout << "\n\t\t\t*** Registro Modificado Corectamente !!! ***\n\n\n\n\t";
 			} else {
