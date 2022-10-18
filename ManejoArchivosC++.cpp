@@ -343,3 +343,4 @@ void validarNum( int num, string msj ) {	// Funcion que determina si la clave in
 	}		
 	return;
 }
+ 
